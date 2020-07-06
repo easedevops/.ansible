@@ -1,0 +1,5 @@
+- hosts: all
+
+  tasks:
+    - name: echo inventory_hostname
+      shell: echo {{inventory_hostname}}
