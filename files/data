@@ -1,0 +1,7 @@
+fdisk /dev/sdb
+pvcreate /dev/sdb1
+vgcreate centos_data /dev/sdb1
+lvcreate -L xxxG -n data centos_data
+mkfs.xfs /dev/centos_data/data
+
+mkdir xxx

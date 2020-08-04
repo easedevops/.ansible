@@ -5,6 +5,9 @@ ansible.log
 *.retry
 /inventory/*
 !/inventory/hosts
+!/inventory/ease
+files/dep.tgz
+files/20.7.4.tgz
 cp
 pc
 tmp

@@ -1,5 +1,49 @@
-- hosts: all
+- hosts: mgt
 
   tasks:
-    - name: echo inventory_hostname
-      shell: echo {{inventory_hostname}}
+    - name: set hostname
+      hostname: name={{inventory_hostname}}
+    - name: set hosts
+      template: src=files/hosts.j2 dest=/etc/hosts
+    - name: stop&disable selinux
+      selinux: state=disabled
+    - name: stop&disable firewalld
+      systemd: name=firewalld state=stopped enabled=no
+
+    - name: copy dep.tgz rpms
+      unarchive: src=files/dep.tgz dest=/root/
+    - name: install dep rpms
+      yum: name={{dep_rpms}} state=present
+
+    - name: start&enable mariadb
+      systemd: name=mariadb state=started enabled=yes
+
+    - name: copy ease_server_tgz files
+      unarchive: src={{ease_server_tgz}} dest=/root/
+    - name: install ease rpm
+      yum: name={{ease_rpm}} state=present
+
+    - name: copy proftpd
+      copy: src=files/proftpd dest=/usr/sbin/proftpd mode=755
+    - name: copy proftpd.conf
+      copy: src=files/proftpd.conf dest=/etc/proftpd.conf
+    - name: file chmod
+      file: path=/etc/ssh/ssh_host_rsa_key mode=600
+    - name: start&enable proftpd
+      systemd: name=proftpd state=started enabled=yes
+
+    - name: copy smb.conf
+      copy: src=files/smb.conf dest=/etc/samba/smb.conf
+    - name: start&enable smb
+      systemd: name=smb state=started enabled=yes
+    - name: start&enable etcd
+      systemd: name=etcd state=started enabled=yes
+
+    - name: setting /stc/supervisord.conf
+      replace: path=/etc/supervisord.ccc regexp="supervisord.d/\*.ini" replace=/opt/ease/etc/easectl.ini
+    - name: copy easectl.ini
+      copy: src=files/easectl.ini dest=/opt/ease/etc/easectl.ini
+    - name: copy easeweb.json
+      copy: src=files/easeweb.json dest=/opt/ease/etc/easeweb.json
+    - name: start&enable supervisord
+      systemd: name=supervisord state=started enabled=yes

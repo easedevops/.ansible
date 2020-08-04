@@ -1,0 +1,194 @@
+/* NXWEB sample config file */
+{
+  "load":[ // load custom C modules compiled into shared libraries
+    {"so":"/opt/ease/modules/libease_handler.so"},
+    //{"so":"/opt/ease/modules/libeaseapi_handler.so"},
+    {"so":"/opt/ease/modules/libdms_handler.so"},
+    {"so":"/opt/ease/modules/libhpcc_handler.so"},
+  ],
+  "listen":[ // interfaces can be overriden by command-line arguments
+    {"interface":":80", "backlog":4096},
+    //{"interface":":8089", "backlog":1024, "secure":true,
+      // "cert":"ssl/server_cert.pem", "key":"ssl/server_key.pem", "dh":"ssl/dh.pem",
+      // "priorities":"NORMAL:+VERS-TLS-ALL:+COMP-ALL:-CURVE-ALL:+CURVE-SECP256R1"}
+   ],
+  // uncomment if needed
+  // "drop_privileges":{ // these settings can be overriden by command-line arguments
+  //   "group":"www-data", "user":"www-data",
+  // },
+  "backends":{
+    "backend1":{"connect":"localhost:8000"},
+    "backend2":{"connect":"localhost:8080"}
+  },
+  "logging":{
+    // can't set error log here; it is opened before parsing this config file; use command line switch for that
+    "log_level":"ERROR"
+    // "access_log":"logs/nxweb_access_log"
+  },
+  "modules":{
+    "python":{
+      //"virtualenv_path":"easeops",
+      //"project_path":"easeops/operations",                      // python module search root; relative to workdir
+      //"wsgi_application":"operations.wsgi.application"          // full python name of WSGI entry point
+      //"project_path":"python",                      // python module search root; relative to workdir
+      //"wsgi_application":"router.router"          // full python name of WSGI entry point
+    },
+    "ease_handler":{
+      "db_host":"127.0.0.1",
+      "db_user":"desktop",
+      "db_password":"123456",
+      "db_schema":"netop",
+      "db_init_connect_num":"20",   // db init connections;
+      "client_port":"50051",        // servie port.
+      "ipa_server":"127.0.0.1",     // ipa server.
+      //"windows_ad_host":"192.168.1.133",
+      //"windows_ad_domain":"DEV.EASEGROUP.COM",
+      //"windows_ad_auth_host":"192.168.2.160",
+      //"windows_ad_auth_domain":"DEV.EASEGROUP.COM.CN",
+      "file_perm":"0660",
+      "dir_perm":"0770",
+      //"use_proftpd":"1",
+      // "use_sftp":"1",
+      //"ipmap_file":"/opt/ease/etc/ipmap_file.json",
+      "license_server":"127.0.0.1:50055",
+      "license_issue_to":"ease",
+      "license_issue_to_uuid":"29830d8d-c246-4795-a37b-46f14d43f5f6",
+      //"app_store_url":"http://192.168.2.63/app",
+      //"app_store_api_no":"ease1Q8PdtqqcftuyR6HzjTl2MV1WQ7",
+      //"app_store_api_secret":"b2aecbfbaf0fa1ebbae6d688aae49847",
+      //"app_store_enterprise":"EASE-TEST-192-168-2-63",
+      //"auth_calt_so":"/home/cloud/work/calt_auth_extension/runenv/modules/libcaltauth.so",
+      //"auth_calt_so_config":"/home/cloud/work/calt_auth_extension/runenv/auth_calt.ini",
+      //"need_bind_apps": [16,17] ,
+      // "bind_to_user_username":"m",
+      //"bind_to_user_passwd":"123456",
+      "computable_suffix":"inp,job",
+      //"cas_login_page_url":"http://192.168.1.35/authsrv/login",
+      //"cas_service_api":"http://192.168.2.163/ease?mode=",
+      //"encryption_app_names":"chrome.exe,notepad.exe",
+      //"encryption_app_md5s":"1cb4a1ad9ee27f8da3a3838f1d0a1573,",
+      "can_user_clean":1,
+      "file_perm_inherit":1,
+      "file_perm_recursive":1,
+      //"has_thumbnail_server":0,
+      //"open_quota":0,
+      //"video_player_url":"http://ip:port/vidio",
+      //"ease_web_ip":"192.168.2.163:80",
+      "ftp_root_path":"/opt/ease/ftproot",
+      "ftp_host_mount_path":"/share",
+      "ftp_host_ip":"192.168.2.100",
+      "debug":0
+    },
+    "dms_handler":{
+      "db_host":"127.0.0.1",
+      "db_user":"desktop",
+      "db_password":"123456",
+      "db_schema":"dms_server",
+      "db_init_connect_num":"5",   // db init connections;
+      "license_server":"127.0.0.1:50055",
+      "license_issue_to":"ease",
+      "license_issue_to_uuid":"29830d8d-c246-4795-a37b-46f14d43f5f6",
+      "license_path":"/opt/ease/.license/",
+      "db_web_server_url":"http://127.0.0.1"
+    },
+    "hpcc_handler":{
+      "db_host":"127.0.0.1",
+      "db_user":"desktop",
+      "db_password":"123456",
+      "db_schema":"hpcc",
+      "db_init_connect_num":"5",   // db init connections;
+      "hpcc_host":"127.0.0.1",
+      "hpcc_port":"50056",
+      "software_path":"/opt/ease/.software/",
+      "debug":0
+    },
+    //"ease_handler":{
+    //},
+    "image_filter":{
+      "allowed_cmds":[
+        {"cmd":"scale", "width":50, "height":50}, // eg. /path/to/image.50x50.jpg
+        {"cmd":"crop", "width":50, "height":50}, // eg. /path/to/image.c50x50.jpg
+        {"cmd":"scale", "width":100, "height":100}, // eg. /path/to/image.100x100.jpg
+        {"cmd":"crop", "width":100, "height":100}, // eg. /path/to/image.c100x100.jpg
+        {"cmd":"crop", "width":200, "height":100}, // eg. /path/to/image.c200x100.jpg
+        {"cmd":"fill", "width":100, "height":100, "bgcolor":"#FF8800"}, // eg. /path/to/image.f100x100xFF8800.jpg
+        {"cmd":"fill", "width":500, "height":500, "bgcolor":"#FF8800"}  // eg. /path/to/image.f500x500xFF8800.jpg
+      ],
+      // don't forget to change secret key in your setup
+      "sign_key":"xbLBZeqSsUgfKWooMKoh0r1gjzqG856yVCMLf1pz"
+    },
+    "draw_filter":{
+      "font_file":"fonts/Sansation/Sansation_Bold.ttf"
+    }
+  },
+  "routing":[
+    //{ 
+    //  "prefix":"/api", "handler":"easeapi_handler"
+    //},
+    //{ 
+    //  "prefix":"/vdi", "handler":"easevdi_handler"
+    //},
+    { // see modules/upload.c
+      "prefix":"/upload", "handler":"upload"
+    },
+    {
+      "prefix":"/backend1", "handler":"http_proxy", "backend":"backend1",
+      "uri":"", // prepend this uri prefix to path info
+      "proxy_copy_host":true, // copy host header from original request
+      "filters":[
+        {"type":"file_cache", "cache_dir":"cache/proxy"},
+        {"type":"templates"},
+        {"type":"ssi"},
+        {"type":"gzip", "compression":4, "cache_dir":"cache/gzip"}
+      ]
+    },
+    {
+      "prefix":"/backend2", "handler":"http_proxy", "backend":"backend2",
+      "uri":"", // prepend this uri prefix to path info
+      "proxy_copy_host":true, // copy host header from original request
+      "filters":[
+        {"type":"file_cache", "cache_dir":"cache/proxy"},
+        {"type":"templates"},
+        {"type":"ssi"},
+        {"type":"gzip", "compression":4, "cache_dir":"cache/gzip"}
+      ]
+    },
+    {
+        "prefix":"/ease", "handler":"ease_handler"
+    },
+    {
+        "prefix":"/dms", "handler":"dms_handler"
+    },
+    {
+        "prefix":"/hpcc", "handler":"hpcc_handler"
+    },
+    {
+      "prefix":null, // null matches all requests
+      "handler":"sendfile",
+      // "vhost":".some.host.com", // match only at this host
+      // "secure_only":true, // match under https connection only
+      // "insecure_only":true, // match under http (not https) connection only
+      "dir":"/opt/ease/www", // aka document root
+      "memcache":true, // cache small files in memory
+      "charset":"utf-8", // charset for text files
+      "index_file":"index.html", // directory index
+      "filters":[
+        {"type":"templates"},
+        {"type":"ssi"},
+        {"type":"image", "cache_dir":"cache/img"},
+        {"type":"gzip", "compression":4, "cache_dir":"cache/gzip"}
+      ]
+    },
+    {
+      "prefix":"/py", "handler":"python",
+      "dir":"cache/upload_temp", // temp dir for large uploads
+      "size":50000000 /* 50 Mb */, // max upload size
+      "filters":[
+        {"type":"file_cache", "cache_dir":"cache/python"},
+        {"type":"templates"},
+        {"type":"ssi"},
+        {"type":"gzip", "compression":4, "cache_dir":"cache/gzip"}
+      ]
+    }
+  ]
+}
