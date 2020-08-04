@@ -5,3 +5,4 @@ lvcreate -L xxxG -n data centos_data
 mkfs.xfs /dev/centos_data/data
 
 mkdir xxx
+set date time...
