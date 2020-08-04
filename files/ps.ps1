@@ -10,3 +10,4 @@ net.exe stop wuauserv; sc.exe config wuauserv start= disabled; sc.exe failure wu
 #secedit 导入策略    导出inf 生成db  导入db
 # 修改注册表
 #Set-ItemProperty -Path "HKLM:\SYSTEM"
+# 修改时间等
