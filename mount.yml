@@ -1,0 +1,20 @@
+- hosts: mgt
+
+  tasks:
+    - name: parted
+      parted: device={{data_dev}} number=1 flags=lvm state=present        
+    - name: vg centos_data
+      lvg: vg=centos_data pvs={{data_dev}}1 state=present
+    - name: lv data
+      lvol: vg=centos_data lv=data size=100%FREE state=present
+      when: "'data' not in ansible_lvm['lvs']"
+    - name: xfs
+      filesystem: device=/dev/centos_data/data fstype=xfs
+    - name: mount /share
+      mount: src=/dev/mapper/centos_data-data name=/share fstype=xfs opts=defaults,quota state=mounted
+    - name: mount /easehome
+      mount: src=/share/easehome name=/easehome fstype=none opts=rw,bind,quota state=mounted
+    - name: mount /share/hosname
+      mount: src=/share/easehome name=/share/{{inventory_hostname}} fstype=none opts=rw,bind,quota state=mounted
+    - name: mount /easeshare/public
+      mount: src=/share/easepublic name=/easeshare/public fstype=none opts=rw,bind,quota state=mounted
