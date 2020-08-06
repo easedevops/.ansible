@@ -40,7 +40,7 @@
       systemd: name=etcd state=started enabled=yes
 
     - name: setting /stc/supervisord.conf
-      replace: path=/etc/supervisord.ccc regexp="supervisord.d/\*.ini" replace=/opt/ease/etc/easectl.ini
+      replace: path=/etc/supervisord.conf regexp="supervisord.d/\*.ini" replace=/opt/ease/etc/easectl.ini
     - name: copy easectl.ini
       copy: src=files/easectl.ini dest=/opt/ease/etc/easectl.ini
     - name: copy easeweb.json
