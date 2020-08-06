@@ -12,5 +12,6 @@ UUID=7b3b9cc0-9d5e-4abd-b2c1-801e2b287f49 /boot                   xfs     defaul
 
 /dev/mapper/centos_data-data  /share  xfs  defaults,quota  0 0
 /share/easehome  /easehome  none  rw,bind,quota  0 0
+/share/easehome  /share/easemgt  none  rw,bind,quota  0 0
 /share/easepublic  /easeshare/public  none  rw,bind,quota  0 0
-/easehome  /share/easemgt  none  rw,bind  0 0
+
