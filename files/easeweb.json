@@ -76,7 +76,7 @@
       //"ease_web_ip":"192.168.2.163:80",
       "ftp_root_path":"/opt/ease/ftproot",
       "ftp_host_mount_path":"/share",
-      "ftp_host_ip":"192.168.2.100",
+      //"ftp_host_ip":"192.168.2.100",
       "debug":0
     },
     "dms_handler":{
