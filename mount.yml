@@ -12,9 +12,13 @@
       filesystem: device=/dev/centos_data/data fstype=xfs
     - name: mount /share
       mount: src=/dev/mapper/centos_data-data name=/share fstype=xfs opts=defaults,quota state=mounted
+    - name: /share/easehome dir
+      file: path=/share/easehome state=directory
     - name: mount /easehome
       mount: src=/share/easehome name=/easehome fstype=none opts=rw,bind,quota state=mounted
     - name: mount /share/hosname
       mount: src=/share/easehome name=/share/{{inventory_hostname}} fstype=none opts=rw,bind,quota state=mounted
+    - name:  /share/easepublic dir
+      file: path=/share/easepublic state=directory
     - name: mount /easeshare/public
       mount: src=/share/easepublic name=/easeshare/public fstype=none opts=rw,bind,quota state=mounted
